@@ -20,6 +20,11 @@
     }
     .status-update--monster { color: red; }
     .status-update--player { color: darkblue; }
+
+    .status-update__wrapper {
+      max-height: 200px;
+      overflow-y: auto;
+    }
   </style>
 </head>
 <body>
@@ -31,7 +36,7 @@
             <div class="text-center panel-heading"><h2>YOU</h2></div>
             <div class="panel-body">
               <div class="progress">
-                <div class="progress-bar progress-bar-success" :style="{width: playerHp  + '%'}">
+                <div class="progress-bar" :class="'progress-bar-' + damageAmount(playerHp)" :style="{width: playerHp  + '%'}">
                   {{ playerHp }}
                 </div>
               </div>
@@ -43,7 +48,7 @@
             <div class="text-center panel-heading"><h2>MONSTER</h2></div>
             <div class="panel-body">
               <div class="progress">
-                <div class="progress-bar progress-bar-success" :style="{width: monsterHp + '%'}">
+                <div class="progress-bar" :class="'progress-bar-' + damageAmount(monsterHp)" :style="{width: monsterHp + '%'}">
                   {{ monsterHp }}
                 </div>
               </div>
@@ -65,7 +70,7 @@
               <button class="btn btn-lg btn-danger" @click="attack()">Attack</button>
               <button class="btn btn-lg btn-warning" @click="specialAttack()">Special Attack</button>
               <button class="btn btn-lg btn-success" @click="heal()">Heal</button>
-              <button class="btn btn-lg btn-default" @click="startNewGame()">Give Up</button>
+              <button class="btn btn-lg btn-default" @click="startNewGame()">Restart</button>
             </div>
           </div>
         </template>
@@ -73,14 +78,17 @@
     </div>
 
     <div v-if="gameInit" class="row status">
-      <div class="panel text-center">
+      <div class="status-update__wrapper panel text-center">
         <div class="panel-body">
           <template v-for="update in status">
-            <p v-if="update.stat > 0">{{update.char}} {{update.type}} for {{update.stat}}</p>
-            <p v-else>{{update.char}} missed!</p>
+            <template v-if="update.type!='death'">
+              <p class="status-update" :class="update.char == 'player' ? 'bg-info status-update--player' : 'bg-danger status-update--monster'" v-if="update.str > 0">{{update.char}} {{update.type}} - {{update.str}} dmg</p>
+              <p class="bg-warning status-update" v-else>{{update.char}} missed!</p>
+            </template>
+            <template v-else>
+              <p class="status-update bg-success">{{update.char}} has been defeated!</p>
+            </template>
           </template>
-          <!-- <p class="bg-info status-update status-update--player">player hits monster for 5</p>
-          <p class="bg-danger status-update status-update--monster">monster hits player for 7</p> -->
         </div>
       </div>
     </div>
