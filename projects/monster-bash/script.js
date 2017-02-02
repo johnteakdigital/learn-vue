@@ -23,8 +23,6 @@ var monsterBash = new Vue({
       }
     }
   },
-  computed: {
-  },
   methods: {
     startNewGame: function() {
       this.gameInit = !this.gameInit
