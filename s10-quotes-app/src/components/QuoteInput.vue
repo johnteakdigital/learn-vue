@@ -1,7 +1,7 @@
 <template>
   <div class="quoteInput">
     <h5>Quote</h5>
-    <textarea v-model="newQuote" class="form-control"></textarea>
+    <input type="text" @keydown.enter="addQuote(newQuote)" v-model="newQuote" class="form-control">
     <button @click="addQuote(newQuote)" class="btn btn-primary">Add Quote</button>
   </div>
 </template>
@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     addQuote(newQuote) {
-      this.$emit('quoteAdded', newQuote)
+      this.$emit('quoteAdded', newQuote.trim())
       this.newQuote = ''
     },
     updateInfo(info) {

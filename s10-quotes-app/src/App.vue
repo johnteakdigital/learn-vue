@@ -63,7 +63,7 @@ export default {
       }
     },
     deleteQuote(index) {
-      this.quotes.pop(index)
+      this.quotes.splice(index,1)
     }
   }
 }
